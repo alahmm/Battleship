@@ -139,7 +139,14 @@ public class Main {
 
                                                 if ((Math.abs(indexIOfStart - indexIOfEnd) == 0 && Math.abs(indexJOfStart - indexJOfEnd) == decider(counter)) ||
                                                         (Math.abs(indexIOfStart - indexIOfEnd) == decider(counter))) {
-                                                    PositionProvider(start, end, PositionReturner(start, end, matrixOfPositions));
+           /*                                         if (matrixOfPositions[indexIOfStart ][indexJOfStart - 1] != '0' &&
+                                                            matrixOfPositions[indexIOfStart][indexJOfStart + 1] != '0' &&
+                                                            matrixOfPositions[indexIOfEnd][indexJOfEnd + 1] != '0' &&
+                                                            matrixOfPositions[indexIOfEnd][indexJOfEnd - 1] != '0' &&
+                                                            matrixOfPositions[indexIOfStart + 1][indexJOfStart] != '0' &&
+                                                            matrixOfPositions[indexIOfEnd - 1][indexJOfEnd] != '0') {*/
+                                                        PositionProvider(start, end, PositionReturner(start, end, matrixOfPositions));
+                                                        //matrixOfPositions = PositionReturner(start, end, matrixOfPositions);
                                                     counter++;
                                                     try {
                                                         if (counter != 5) {
@@ -150,14 +157,18 @@ public class Main {
                                                     } catch (Exception e) {
                                                         System.out.println("Error");
                                                     }
-
+          /*                                      } else {
+                                                        System.out.println("Error! You placed it too close to another one. Try again:");
+                                                    }*/
                                                 } else {
 
                                                     System.out.printf("%nError! Wrong length of %s! Try again:%n", deciderName(counter));
 
                                                 }
                                         } else {
+                                            System.out.println();
                                             System.out.println("Error! Wrong ship location! Try again:");
+                                            System.out.println();
                                         }
 
                                 } else {
