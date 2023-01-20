@@ -109,14 +109,13 @@ public class Main {
 
     public static void printer (int counter) {
         System.out.println();
-        System.out.printf("Enter the coordinates of %s (%d cells):%n", deciderName(counter), decider(counter));
+        System.out.printf("Enter the coordinates of %s (%d cells):%n", deciderName(counter), decider(counter) + 1);
         System.out.println();
     }
 
     public static void main(String[] args) {
         PositionProvider();
-        System.out.println();
-        System.out.println("Enter the coordinates of the Aircraft Carrier (5 cells):");
+        printer(0);
         char[][] matrixOfPositions = new char[10][10];
         int counter = 0;
         try(Scanner scanner = new Scanner(System.in)) {
@@ -136,6 +135,15 @@ public class Main {
                                 (Math.abs(indexIOfStart - indexIOfEnd) == decider(counter))) {
                             PositionProvider(start, end, PositionReturner(start, end, matrixOfPositions));
                             counter++;
+                            try {
+                                if (counter != 5) {
+                                    printer(counter);
+                                } else {
+                                    return;
+                                }
+                            } catch (Exception e) {
+                                System.out.printf("Error! Wrong length of %s! Try again:", deciderName(counter));
+                            }
                         } else {
                             System.out.println("Error! Wrong length of the Aircraft Carrier! Try again:");
                         }
@@ -148,34 +156,6 @@ public class Main {
                 } else {
                     System.out.println("Error! Enter a valid number");
                 }
-                    if (counter == 1) {
-                        System.out.println();
-                        System.out.println("Enter the coordinates of the Battleship (4 cells):");
-                        System.out.println();
-
-                    }
-                    if (counter == 2) {
-                        System.out.println();
-                        System.out.println("Enter the coordinates of the Submarine (3 cells):");
-                        System.out.println();
-
-                    }
-                    if (counter == 3) {
-                        System.out.println();
-                        System.out.println("Enter the coordinates of the Cruiser (3 cells):");
-                        System.out.println();
-
-                    }
-                    if (counter == 4) {
-                        System.out.println();
-                        System.out.println("Enter the coordinates of the Destroyer (2 cells):");
-                        System.out.println();
-                    }
-                    if (counter == 5) {
-                        return;
-                    }
-
-
                 } catch (Exception e) {
                         System.out.println("Error! Enter numbers");
                     }
