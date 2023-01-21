@@ -1,22 +1,29 @@
 package battelship;
 
+import java.util.Arrays;
 import java.util.Scanner;
 
 public class Main {
 
-    public static void PositionProvider() {
+    public static char[][] Provider() {
         char[][] matrixOfPositions = new char[10][10];
-        String line = "  1 2 3 4 5 6 7 8 9 10";
-        System.out.println(line);
-        for (int i = 0; i < matrixOfPositions.length; i++) {
-            char variable = (char) (i + 65);
-            System.out.print(variable + " ");
-            for (int j = 0; j < matrixOfPositions[i].length; j++) {
-                matrixOfPositions[i][j] = '~';
-                System.out.print(matrixOfPositions[i][j] + " ");
-            }
-            System.out.println();
+        for (char[] matrixOfPosition : matrixOfPositions) {
+            Arrays.fill(matrixOfPosition, '~');
         }
+        return matrixOfPositions;
+    }
+    public static char[][] ProviderMissOrHit(int indexIOfStart, int indexJOfStart, char variable) {
+        char[][] matrixOfPositions = new char[10][10];
+        for (int i = 0; i < matrixOfPositions.length; i++) {
+            for (int j = 0; j < matrixOfPositions[i].length; j++) {
+                if (i == indexIOfStart && j == indexJOfStart) {
+                    matrixOfPositions[i][j] = variable;
+                } else {
+                    matrixOfPositions[i][j] = '~';
+                }
+            }
+        }
+        return matrixOfPositions;
     }
 
     public static void PositionProvider(char[][] matrixOfPositions) {
@@ -276,7 +283,7 @@ public class Main {
     }
 
     public static void main(String[] args) {
-        PositionProvider();
+        PositionProvider(Provider());
         printer(0);
         char[][] matrixOfPositions = new char[10][10];
         int counter = 0;
@@ -308,7 +315,8 @@ public class Main {
                                                             System.out.println();
                                                             System.out.println("The game starts!");
                                                             System.out.println();
-                                                            PositionProvider(matrixOfPositions);
+                                                            PositionProvider(Provider());
+                                                            //PositionProvider(matrixOfPositions);
                                                             System.out.println();
                                                             System.out.println("Take a shot!");
                                                             System.out.println();
@@ -316,15 +324,22 @@ public class Main {
                                                                 String start2 = scanner.next();
                                                                 System.out.println();
                                                                 if (start2.matches(regexChar)) {
-                                                                    PositionProvider(Shoter(matrixOfPositions, start2));
-                                                                    System.out.println();
                                                                     int indexIOfStart2= (int) start2.charAt(0) - 65;
                                                                     int indexJOfStart2 = Integer.parseInt(start2.substring(1)) - 1;
+                                                                    Shoter(matrixOfPositions, start2);
+                                                                    if (matrixOfPositions[indexIOfStart2][indexJOfStart2] == 'X') {
+                                                                        PositionProvider(ProviderMissOrHit(indexIOfStart2, indexJOfStart2, 'X'));
+                                                                    } else {
+                                                                        PositionProvider(ProviderMissOrHit(indexIOfStart2, indexJOfStart2, 'M'));
+                                                                    }
+                                                                    System.out.println();
                                                                     if (matrixOfPositions[indexIOfStart2][indexJOfStart2] == 'X') {
                                                                         System.out.println("You hit a ship!");
                                                                     } else {
                                                                         System.out.println("You missed!");
                                                                     }
+                                                                    System.out.println();
+                                                                    PositionProvider(matrixOfPositions);
                                                                     return;
                                                                 } else {
                                                                     System.out.println("Error! You entered the wrong coordinates! Try again:");
