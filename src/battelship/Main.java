@@ -42,9 +42,9 @@ public class Main {
             System.out.print(variable + " ");
             for (int j = 0; j < matrixOfPositions[i].length; j++) {
                 if (i >= indexIOfStart && i <= indexIOfEnd && j >= indexJOfStart && j <= indexJOfEnd) {
-                    matrixOfPositions[i][j] = '0';
-                } else if (matrixOfPositions[i][j] == '0') {
-                    matrixOfPositions[i][j] = '0';
+                    matrixOfPositions[i][j] = 'O';
+                } else if (matrixOfPositions[i][j] == 'O') {
+                    matrixOfPositions[i][j] = 'O';
                 } else {
                     matrixOfPositions[i][j] = '~';
                 }
@@ -74,9 +74,9 @@ public class Main {
         for (int i = 0; i < matrixOfPositions.length; i++) {
             for (int j = 0; j < matrixOfPositions[i].length; j++) {
                 if (i >= indexIOfStart && i <= indexIOfEnd && j >= indexJOfStart && j <= indexJOfEnd) {
-                    matrixOfPositions[i][j] = '0';
-                } else if (matrixOfPositions[i][j] == '0') {
-                    matrixOfPositions[i][j] = '0';
+                    matrixOfPositions[i][j] = 'O';
+                } else if (matrixOfPositions[i][j] == 'O') {
+                    matrixOfPositions[i][j] = 'O';
                 } else {
                     matrixOfPositions[i][j] = '~';
                 }
@@ -117,6 +117,175 @@ public class Main {
         System.out.println();
     }
 
+    public static boolean detector (int indexIOfStart, int indexJOfStart, int indexIOfEnd, int indexJOfEnd, char[][] matrix) {
+        boolean isSpace = true;
+        if (indexIOfStart > indexIOfEnd) {
+            int save = indexIOfStart;
+            indexIOfStart = indexIOfEnd;
+            indexIOfEnd = save;
+        }
+        if (indexJOfStart > indexJOfEnd) {
+            int save = indexJOfStart;
+            indexJOfStart = indexJOfEnd;
+            indexJOfEnd = save;
+        }
+        /**
+         * horizontal
+         */
+        if (indexIOfStart == indexIOfEnd) {
+            if (indexIOfStart == 0) {
+                if (indexJOfStart == 0) {
+                    for (int i = indexJOfStart; i <= indexJOfEnd; i++) {
+                        if (matrix[indexIOfStart + 1][i] == 'O' || matrix[indexIOfStart][indexJOfEnd + 1] == 'O') {
+                            isSpace = false;
+                        }
+                    }
+                } else {
+                    if (indexJOfEnd == 9) {
+                        for (int i = indexJOfStart; i <= indexJOfEnd; i++) {
+                            if (matrix[indexIOfStart + 1][i] == 'O' || matrix[indexIOfStart][indexJOfStart - 1] == 'O') {
+                                isSpace = false;
+                            }
+                        }
+                    } else {
+                        for (int i = indexJOfStart; i <= indexJOfEnd; i++) {
+                            if (matrix[indexIOfStart + 1][i] == 'O' || matrix[indexIOfStart][indexJOfStart - 1] == 'O' ||
+                                    matrix[indexIOfStart][indexJOfEnd + 1] == 'O') {
+                                isSpace = false;
+                            }
+                        }
+                    }
+                }
+            }else if (indexIOfEnd == 9) {
+                if (indexJOfStart == 0) {
+                    for (int i = indexJOfStart; i <= indexJOfEnd; i++) {
+                        if (matrix[indexIOfStart - 1][i] == 'O' || matrix[indexIOfStart][indexJOfEnd + 1] == 'O') {
+                            isSpace = false;
+                        }
+                    }
+                } else {
+                    if (indexJOfEnd == 9) {
+                        for (int i = indexJOfStart; i <= indexJOfEnd; i++) {
+                            if (matrix[indexIOfStart - 1][i] == 'O' || matrix[indexIOfStart][indexJOfStart - 1] == 'O') {
+                                isSpace = false;
+                            }
+                        }
+                    } else {
+                        for (int i = indexJOfStart; i <= indexJOfEnd; i++) {
+                            if (matrix[indexIOfStart - 1][i] == 'O' || matrix[indexIOfStart][indexJOfStart - 1] == 'O' ||
+                                    matrix[indexIOfStart][indexJOfEnd + 1] == '0') {
+                                isSpace = false;
+                            }
+                        }
+                    }
+                }
+            } else {
+                if (indexJOfStart == 0) {
+                    for (int i = indexJOfStart; i <= indexJOfEnd; i++) {
+                        if (matrix[indexIOfStart - 1][i] == 'O' || matrix[indexIOfStart + 1][i] == 'O' ||
+                                matrix[indexIOfStart][indexJOfEnd + 1] == 'O') {
+                            isSpace = false;
+                        }
+                    }
+                } else {
+                    if (indexJOfEnd == 9) {
+                        for (int i = indexJOfStart; i <= indexJOfEnd; i++) {
+                            if (matrix[indexIOfStart - 1][i] == 'O' || matrix[indexIOfStart + 1][i] == 'O' ||
+                                    matrix[indexIOfStart][indexJOfStart - 1] == 'O') {
+                                isSpace = false;
+                            }
+                        }
+                    } else {
+                        for (int i = indexJOfStart; i <= indexJOfEnd; i++) {
+                            if (matrix[indexIOfStart - 1][i] == 'O' && matrix[indexIOfStart + 1][i] == 'O' ||
+                                    matrix[indexIOfStart][indexJOfStart - 1] == 'O' ||
+                                    matrix[indexIOfStart][indexJOfEnd + 1] == 'O') {
+                                isSpace = false;
+                            }
+                        }
+                    }
+                }
+            }
+        } else {
+            /**
+             * vertical
+             */
+            if (indexIOfStart == 0) {
+                if (indexJOfStart == 0) {
+                    for (int i = indexIOfStart; i <= indexIOfEnd; i++) {
+                        if (matrix[i][indexJOfStart + 1] == 'O' || matrix[indexIOfEnd + 1][indexJOfStart] == 'O') {
+                            isSpace = false;
+                        }
+                    }
+                } else {
+                    if (indexJOfEnd == 9) {
+                        for (int i = indexIOfStart; i <= indexIOfEnd; i++) {
+                            if (matrix[i][indexJOfStart - 1] == 'O' || matrix[indexIOfEnd + 1][indexJOfStart] == 'O') {
+                                isSpace = false;
+                            }
+                        }
+                    } else {
+                        for (int i = indexIOfStart; i <= indexIOfEnd; i++) {
+                            if (matrix[i][indexJOfStart - 1] == 'O' || matrix[indexIOfEnd + 1][indexJOfStart] == 'O' ||
+                                    matrix[i][indexJOfStart + 1] == 'O') {
+                                isSpace = false;
+                            }
+                        }
+                    }
+                }
+            }else if (indexIOfEnd == 9) {
+                if (indexJOfStart == 0) {
+                    for (int i = indexIOfStart; i <= indexIOfEnd; i++) {
+                        if (matrix[i][indexJOfStart + 1] == 'O' || matrix[indexIOfStart - 1][indexJOfStart] == 'O') {
+                            isSpace = false;
+                        }
+                    }
+                } else {
+                    if (indexJOfEnd == 9) {
+                        for (int i = indexIOfStart; i <= indexIOfEnd; i++) {
+                            if (matrix[i][indexJOfStart - 1] == 'O' || matrix[indexIOfStart - 1][indexJOfStart] == 'O') {
+                                isSpace = false;
+                            }
+                        }
+                    } else {
+                        for (int i = indexIOfStart; i <= indexIOfEnd; i++) {
+                            if (matrix[i][indexJOfStart - 1] == 'O' || matrix[indexIOfStart - 1][indexJOfStart] == 'O' ||
+                                    matrix[i][indexJOfStart + 1] == 'O') {
+                                isSpace = false;
+                            }
+                        }
+                    }
+                }
+            } else {
+                if (indexJOfStart == 0) {
+                    for (int i = indexIOfStart; i <= indexIOfEnd; i++) {
+                        if (matrix[i][indexJOfStart + 1] == 'O' || matrix[indexIOfEnd + 1][indexJOfStart] == 'O'
+                                || matrix[indexIOfStart - 1][indexJOfStart] == 'O') {
+                            isSpace = false;
+                        }
+                    }
+                } else {
+                    if (indexJOfEnd == 9) {
+                        for (int i = indexIOfStart; i <= indexIOfEnd; i++) {
+                            if (matrix[i][indexJOfStart - 1] == 'O' || matrix[indexIOfEnd + 1][indexJOfStart] == 'O'
+                                    || matrix[indexIOfStart - 1][indexJOfStart] == 'O') {
+                                isSpace = false;
+                            }
+                        }
+                    } else {
+                        for (int i = indexIOfStart; i <= indexIOfEnd; i++) {
+                            if (matrix[i][indexJOfStart + 1] == 'O' || matrix[indexIOfEnd + 1][indexJOfStart] == 'O' ||
+                                    matrix[indexIOfStart - 1][indexJOfStart] == 'O' || matrix[i][indexJOfStart - 1] == 'O') {
+                                isSpace = false;
+                            }
+                        }
+                    }
+                }
+            }
+        }
+        return isSpace;
+    }
+
     public static void main(String[] args) {
         PositionProvider();
         printer(0);
@@ -126,6 +295,7 @@ public class Main {
             while (scanner.hasNext()) {
                 String start = scanner.next();
                 String end = scanner.next();
+                System.out.println();
                         try {
                             String regexChar = "[A-J][1-9]|[A-J]10";
                             int indexIOfStart = (int) start.charAt(0) - 65;
@@ -139,12 +309,7 @@ public class Main {
 
                                                 if ((Math.abs(indexIOfStart - indexIOfEnd) == 0 && Math.abs(indexJOfStart - indexJOfEnd) == decider(counter)) ||
                                                         (Math.abs(indexIOfStart - indexIOfEnd) == decider(counter))) {
-           /*                                         if (matrixOfPositions[indexIOfStart ][indexJOfStart - 1] != '0' &&
-                                                            matrixOfPositions[indexIOfStart][indexJOfStart + 1] != '0' &&
-                                                            matrixOfPositions[indexIOfEnd][indexJOfEnd + 1] != '0' &&
-                                                            matrixOfPositions[indexIOfEnd][indexJOfEnd - 1] != '0' &&
-                                                            matrixOfPositions[indexIOfStart + 1][indexJOfStart] != '0' &&
-                                                            matrixOfPositions[indexIOfEnd - 1][indexJOfEnd] != '0') {*/
+                                                    if (detector(indexIOfStart, indexJOfStart, indexIOfEnd, indexJOfEnd, matrixOfPositions)) {
                                                         PositionProvider(start, end, PositionReturner(start, end, matrixOfPositions));
                                                         //matrixOfPositions = PositionReturner(start, end, matrixOfPositions);
                                                     counter++;
@@ -157,12 +322,15 @@ public class Main {
                                                     } catch (Exception e) {
                                                         System.out.println("Error");
                                                     }
-          /*                                      } else {
+                                                } else {
+                                                        System.out.println();
                                                         System.out.println("Error! You placed it too close to another one. Try again:");
-                                                    }*/
+                                                        System.out.println();
+                                                    }
                                                 } else {
 
                                                     System.out.printf("%nError! Wrong length of %s! Try again:%n", deciderName(counter));
+                                                    System.out.println();
 
                                                 }
                                         } else {
