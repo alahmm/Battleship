@@ -19,36 +19,14 @@ public class Main {
         }
     }
 
-    public static void PositionProvider(String start, String end, char[][] matrixOfPositions) {
+    public static void PositionProvider(char[][] matrixOfPositions) {
 
-        int indexIOfStart = (int) start.charAt(0) - 65;
-        int indexJOfStart = Integer.parseInt(start.substring(1)) - 1;
-        int indexIOfEnd = (int) end.charAt(0) - 65;
-        int indexJOfEnd = Integer.parseInt(end.substring(1)) - 1;
-        if (indexIOfStart > indexIOfEnd) {
-            int save = indexIOfStart;
-            indexIOfStart = indexIOfEnd;
-            indexIOfEnd = save;
-        }
-        if (indexJOfStart > indexJOfEnd) {
-            int save = indexJOfStart;
-            indexJOfStart = indexJOfEnd;
-            indexJOfEnd = save;
-        }
         String line = "  1 2 3 4 5 6 7 8 9 10";
         System.out.println(line);
         for (int i = 0; i < matrixOfPositions.length; i++) {
             char variable = (char) (i + 65);
             System.out.print(variable + " ");
             for (int j = 0; j < matrixOfPositions[i].length; j++) {
-                if (i >= indexIOfStart && i <= indexIOfEnd && j >= indexJOfStart && j <= indexJOfEnd) {
-                    matrixOfPositions[i][j] = 'O';
-                } else if (matrixOfPositions[i][j] == 'O') {
-                    matrixOfPositions[i][j] = 'O';
-                } else {
-                    matrixOfPositions[i][j] = '~';
-                }
-
                 System.out.print(matrixOfPositions[i][j] + " ");
             }
             System.out.println();
@@ -81,6 +59,17 @@ public class Main {
                     matrixOfPositions[i][j] = '~';
                 }
             }
+        }
+        return matrixOfPositions;
+    }
+    public static char[][] Shoter(char[][] matrixOfPositions, String start) {
+
+        int indexIOfStart = (int) start.charAt(0) - 65;
+        int indexJOfStart = Integer.parseInt(start.substring(1)) - 1;
+        if (matrixOfPositions[indexIOfStart][indexJOfStart] == 'O') {
+            matrixOfPositions[indexIOfStart][indexJOfStart] = 'X';
+        } else {
+            matrixOfPositions[indexIOfStart][indexJOfStart] = 'M';
         }
         return matrixOfPositions;
     }
@@ -310,37 +299,60 @@ public class Main {
                                                 if ((Math.abs(indexIOfStart - indexIOfEnd) == 0 && Math.abs(indexJOfStart - indexJOfEnd) == decider(counter)) ||
                                                         (Math.abs(indexIOfStart - indexIOfEnd) == decider(counter))) {
                                                     if (detector(indexIOfStart, indexJOfStart, indexIOfEnd, indexJOfEnd, matrixOfPositions)) {
-                                                        PositionProvider(start, end, PositionReturner(start, end, matrixOfPositions));
-                                                        //matrixOfPositions = PositionReturner(start, end, matrixOfPositions);
+                                                        PositionProvider(PositionReturner(start, end, matrixOfPositions));
                                                     counter++;
                                                     try {
                                                         if (counter != 5) {
                                                             printer(counter);
                                                         } else {
-                                                            return;
+                                                            System.out.println();
+                                                            System.out.println("The game starts!");
+                                                            System.out.println();
+                                                            PositionProvider(matrixOfPositions);
+                                                            System.out.println();
+                                                            System.out.println("Take a shot!");
+                                                            System.out.println();
+                                                            while (scanner.hasNext()) {
+                                                                String start2 = scanner.next();
+                                                                System.out.println();
+                                                                if (start2.matches(regexChar)) {
+                                                                    PositionProvider(Shoter(matrixOfPositions, start2));
+                                                                    System.out.println();
+                                                                    int indexIOfStart2= (int) start2.charAt(0) - 65;
+                                                                    int indexJOfStart2 = Integer.parseInt(start2.substring(1)) - 1;
+                                                                    if (matrixOfPositions[indexIOfStart2][indexJOfStart2] == 'X') {
+                                                                        System.out.println("You hit a ship!");
+                                                                    } else {
+                                                                        System.out.println("You missed!");
+                                                                    }
+                                                                    return;
+                                                                } else {
+                                                                    System.out.println("Error! You entered the wrong coordinates! Try again:");
+                                                                    System.out.println();
+                                                                }
+                                                            }
                                                         }
                                                     } catch (Exception e) {
                                                         System.out.println("Error");
                                                     }
                                                 } else {
-                                                        System.out.println();
                                                         System.out.println("Error! You placed it too close to another one. Try again:");
                                                         System.out.println();
                                                     }
                                                 } else {
 
-                                                    System.out.printf("%nError! Wrong length of %s! Try again:%n", deciderName(counter));
+                                                    System.out.printf("Error! Wrong length of %s! Try again:%n", deciderName(counter));
                                                     System.out.println();
 
                                                 }
                                         } else {
-                                            System.out.println();
                                             System.out.println("Error! Wrong ship location! Try again:");
                                             System.out.println();
                                         }
 
                                 } else {
-                                    System.out.println("Error! Enter a valid number");
+                                    System.out.println("Error! You entered the wrong coordinates! Try again:");
+                                    System.out.println();
                                 }
                         } catch (Exception e) {
                             System.out.println("Error! Enter numbers");
