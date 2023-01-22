@@ -1,6 +1,8 @@
 package battelship;
 
+import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collection;
 import java.util.Scanner;
 
 public class Main {
@@ -83,17 +85,41 @@ public class Main {
         int indexJOfStart = Integer.parseInt(start.substring(1)) - 1;
         if (matrixOfPositions[indexIOfStart][indexJOfStart] == 'O') {
             matrixOfPositions[indexIOfStart][indexJOfStart] = 'X';
-        } else {
+        } else if (matrixOfPositions[indexIOfStart][indexJOfStart] == 'X') {
+            matrixOfPositions[indexIOfStart][indexJOfStart] = 'X';
+        }else {
             matrixOfPositions[indexIOfStart][indexJOfStart] = 'M';
         }
         return matrixOfPositions;
     }
-    public static boolean Checker(char[][] matrixOfPositions) {
+    public static boolean Checker(char[][] matrixOfPositions, ArrayList<Ship> listOfCoordinates, int counter2) {
         boolean isSank = false;
-
-
-
-
+        int counter = 0;
+        ArrayList<Boolean> list = new ArrayList<>();
+        for (Ship variable : listOfCoordinates
+             ) {
+            for (int i = variable.getStartOfIndexI(); i <= variable.getEndOfIndexI(); i++) {
+                for (int j = variable.getStartOfIndexJ(); j <= variable.getEndOfIndexJ() ; j++) {
+                    if (matrixOfPositions[i][j] == 'X') {
+                        isSank = true;
+                    } else {
+                        isSank = false;
+                        break;
+                    }
+                }
+            }
+            list.add(isSank);
+        }
+        for (boolean var:
+                list
+             ) {
+            if (var) {
+                counter ++;
+            }
+        }
+        if (counter == counter2 + 1) {
+            isSank = true;
+        }
         return isSank;
     }
     public static int decider(int counter) {
@@ -300,10 +326,12 @@ public class Main {
     public static void main(String[] args) {
         PositionProvider(Provider());
         printer(0);
+        ArrayList<Ship> listOfCoordinates = new ArrayList<>();
         char[][] matrixOfPositions = new char[10][10];
         char[][] matrixOfPositions2 = new char[10][10];
 
         int counter = 0;
+        int counter2 = 0;
         try (Scanner scanner = new Scanner(System.in)) {
             while (scanner.hasNext()) {
                 String start = scanner.next();
@@ -315,7 +343,16 @@ public class Main {
                             int indexJOfStart = Integer.parseInt(start.substring(1)) - 1;
                             int indexIOfEnd = (int) end.charAt(0) - 65;
                             int indexJOfEnd = Integer.parseInt(end.substring(1)) - 1;
-
+                            if (indexIOfStart > indexIOfEnd) {
+                                int save = indexIOfStart;
+                                indexIOfStart = indexIOfEnd;
+                                indexIOfEnd = save;
+                            }
+                            if (indexJOfStart > indexJOfEnd) {
+                                int save = indexJOfStart;
+                                indexJOfStart = indexJOfEnd;
+                                indexJOfEnd = save;
+                            }
                                 if (start.matches(regexChar) && end.matches(regexChar)) {
 
                                         if (indexIOfStart == indexIOfEnd || indexJOfStart == indexJOfEnd) {
@@ -324,6 +361,7 @@ public class Main {
                                                         (Math.abs(indexIOfStart - indexIOfEnd) == decider(counter))) {
                                                     if (detector(indexIOfStart, indexJOfStart, indexIOfEnd, indexJOfEnd, matrixOfPositions)) {
                                                         PositionProvider(PositionReturner(start, end, matrixOfPositions));
+                                                        listOfCoordinates.add(new Ship(indexIOfStart, indexJOfStart, indexIOfEnd, indexJOfEnd));
                                                     counter++;
                                                     try {
                                                         if (counter != 5) {
@@ -333,7 +371,6 @@ public class Main {
                                                             System.out.println("The game starts!");
                                                             System.out.println();
                                                             PositionProvider(Provider());
-                                                            //PositionProvider(matrixOfPositions);
                                                             System.out.println();
                                                             System.out.println("Take a shot!");
                                                             System.out.println();
@@ -352,7 +389,17 @@ public class Main {
                                                                     }
                                                                     System.out.println();
                                                                     if (matrixOfPositions[indexIOfStart2][indexJOfStart2] == 'X') {
-                                                                        System.out.println("You hit a ship! Try again:");
+                                                                        if (Checker(matrixOfPositions, listOfCoordinates, counter2)) {
+                                                                            counter2 ++;
+                                                                            if (counter2 == 5) {
+                                                                                System.out.println("You sank the last ship. You won. Congratulations!");
+                                                                                return;
+                                                                            } else {
+                                                                                System.out.println("You sank a ship! Specify a new target:");
+                                                                            }
+                                                                        } else {
+                                                                            System.out.println("You hit a ship! Try again:");
+                                                                        }
                                                                     } else {
                                                                         System.out.println("You missed. Try again:");
                                                                     }
