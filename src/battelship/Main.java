@@ -12,12 +12,16 @@ public class Main {
         }
         return matrixOfPositions;
     }
-    public static char[][] ProviderMissOrHit(int indexIOfStart, int indexJOfStart, char variable) {
-        char[][] matrixOfPositions = new char[10][10];
+    public static char[][] ProviderMissOrHit(int indexIOfStart, int indexJOfStart, char variable, char[][] matrixOfPositions) {
         for (int i = 0; i < matrixOfPositions.length; i++) {
             for (int j = 0; j < matrixOfPositions[i].length; j++) {
+
                 if (i == indexIOfStart && j == indexJOfStart) {
                     matrixOfPositions[i][j] = variable;
+                } else if (matrixOfPositions[i][j] == 'X') {
+                        matrixOfPositions[i][j] = 'X';
+                } else if (matrixOfPositions[i][j] == 'M') {
+                        matrixOfPositions[i][j] = 'M';
                 } else {
                     matrixOfPositions[i][j] = '~';
                 }
@@ -62,6 +66,10 @@ public class Main {
                     matrixOfPositions[i][j] = 'O';
                 } else if (matrixOfPositions[i][j] == 'O') {
                     matrixOfPositions[i][j] = 'O';
+                } else if (matrixOfPositions[i][j] == 'X') {
+                    matrixOfPositions[i][j] = 'X';
+                } else if (matrixOfPositions[i][j] == 'M') {
+                    matrixOfPositions[i][j] = 'M';
                 } else {
                     matrixOfPositions[i][j] = '~';
                 }
@@ -80,7 +88,14 @@ public class Main {
         }
         return matrixOfPositions;
     }
+    public static boolean Checker(char[][] matrixOfPositions) {
+        boolean isSank = false;
 
+
+
+
+        return isSank;
+    }
     public static int decider(int counter) {
         if (counter == 0) {
             return 4;
@@ -286,6 +301,8 @@ public class Main {
         PositionProvider(Provider());
         printer(0);
         char[][] matrixOfPositions = new char[10][10];
+        char[][] matrixOfPositions2 = new char[10][10];
+
         int counter = 0;
         try (Scanner scanner = new Scanner(System.in)) {
             while (scanner.hasNext()) {
@@ -328,19 +345,20 @@ public class Main {
                                                                     int indexJOfStart2 = Integer.parseInt(start2.substring(1)) - 1;
                                                                     Shoter(matrixOfPositions, start2);
                                                                     if (matrixOfPositions[indexIOfStart2][indexJOfStart2] == 'X') {
-                                                                        PositionProvider(ProviderMissOrHit(indexIOfStart2, indexJOfStart2, 'X'));
+                                                                        PositionProvider(ProviderMissOrHit(indexIOfStart2, indexJOfStart2, 'X', matrixOfPositions2));
+
                                                                     } else {
-                                                                        PositionProvider(ProviderMissOrHit(indexIOfStart2, indexJOfStart2, 'M'));
+                                                                        PositionProvider(ProviderMissOrHit(indexIOfStart2, indexJOfStart2, 'M', matrixOfPositions2));
                                                                     }
                                                                     System.out.println();
                                                                     if (matrixOfPositions[indexIOfStart2][indexJOfStart2] == 'X') {
-                                                                        System.out.println("You hit a ship!");
+                                                                        System.out.println("You hit a ship! Try again:");
                                                                     } else {
-                                                                        System.out.println("You missed!");
+                                                                        System.out.println("You missed. Try again:");
                                                                     }
                                                                     System.out.println();
-                                                                    PositionProvider(matrixOfPositions);
-                                                                    return;
+        /*                                                            PositionProvider(matrixOfPositions);
+                                                                    return;*/
                                                                 } else {
                                                                     System.out.println("Error! You entered the wrong coordinates! Try again:");
                                                                     System.out.println();
