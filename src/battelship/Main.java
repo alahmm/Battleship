@@ -92,34 +92,29 @@ public class Main {
         }
         return matrixOfPositions;
     }
-    public static boolean Checker(char[][] matrixOfPositions, ArrayList<Ship> listOfCoordinates, int counter2) {
+    public static boolean Checker(char[][] matrixOfPositions, ArrayList<Ship> listOfCoordinates, int counterSank) {
         boolean isSank = false;
         int counter = 0;
+        int counterTrue = 0;
         ArrayList<Boolean> list = new ArrayList<>();
         for (Ship variable : listOfCoordinates
              ) {
             for (int i = variable.getStartOfIndexI(); i <= variable.getEndOfIndexI(); i++) {
                 for (int j = variable.getStartOfIndexJ(); j <= variable.getEndOfIndexJ() ; j++) {
                     if (matrixOfPositions[i][j] == 'X') {
-                        isSank = true;
-                    } else {
-                        isSank = false;
-                        break;
+                        counter++;
                     }
                 }
             }
-            list.add(isSank);
-        }
-        for (boolean var:
-                list
-             ) {
-            if (var) {
-                counter ++;
+            if (counter == variable.getLength() + 1) {
+                counterTrue ++;
             }
+            counter = 0;
         }
-        if (counter == counter2 + 1) {
+        if (counterTrue == counterSank + 1) {
             isSank = true;
         }
+
         return isSank;
     }
     public static int decider(int counter) {
@@ -361,7 +356,7 @@ public class Main {
                                                         (Math.abs(indexIOfStart - indexIOfEnd) == decider(counter))) {
                                                     if (detector(indexIOfStart, indexJOfStart, indexIOfEnd, indexJOfEnd, matrixOfPositions)) {
                                                         PositionProvider(PositionReturner(start, end, matrixOfPositions));
-                                                        listOfCoordinates.add(new Ship(indexIOfStart, indexJOfStart, indexIOfEnd, indexJOfEnd));
+                                                        listOfCoordinates.add(new Ship(indexIOfStart, indexJOfStart, indexIOfEnd, indexJOfEnd, decider(counter)));
                                                     counter++;
                                                     try {
                                                         if (counter != 5) {

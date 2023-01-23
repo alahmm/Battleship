@@ -5,6 +5,15 @@ public class Ship {
     private int startOfIndexJ;
     private int endOfIndexI;
     private int endOfIndexJ;
+    private int length;
+
+    public int getLength() {
+        return length;
+    }
+
+    public void setLength(int length) {
+        this.length = length;
+    }
 
     public int getEndOfIndexI() {
         return endOfIndexI;
@@ -37,10 +46,11 @@ public class Ship {
     public void setEndOfIndexJ(int endOfIndexJ) {
         this.endOfIndexJ = endOfIndexJ;
     }
-    public Ship (int startOfIndexI, int startOfIndexJ, int endOfIndexI, int endOfIndexJ) {
+    public Ship (int startOfIndexI, int startOfIndexJ, int endOfIndexI, int endOfIndexJ, int length) {
         this.endOfIndexI = endOfIndexI;
         this.endOfIndexJ = endOfIndexJ;
         this.startOfIndexI = startOfIndexI;
         this.startOfIndexJ = startOfIndexJ;
+        this.length = length;
     }
 }
