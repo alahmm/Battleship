@@ -96,7 +96,6 @@ public class Main {
         boolean isSank = false;
         int counter = 0;
         int counterTrue = 0;
-        ArrayList<Boolean> list = new ArrayList<>();
         for (Ship variable : listOfCoordinates
              ) {
             for (int i = variable.getStartOfIndexI(); i <= variable.getEndOfIndexI(); i++) {
