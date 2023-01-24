@@ -1,10 +1,7 @@
 package battelship;
 
-import javax.print.DocFlavor;
-import javax.swing.plaf.synth.SynthOptionPaneUI;
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.Collection;
 import java.util.Scanner;
 
 public class Main {
@@ -16,24 +13,6 @@ public class Main {
         }
         return matrixOfPositions;
     }
-    public static char[][] ProviderMissOrHit(int indexIOfStart, int indexJOfStart, char variable, char[][] matrixOfPositions) {
-        for (int i = 0; i < matrixOfPositions.length; i++) {
-            for (int j = 0; j < matrixOfPositions[i].length; j++) {
-
-                if (i == indexIOfStart && j == indexJOfStart) {
-                    matrixOfPositions[i][j] = variable;
-                } else if (matrixOfPositions[i][j] == 'X') {
-                        matrixOfPositions[i][j] = 'X';
-                } else if (matrixOfPositions[i][j] == 'M') {
-                        matrixOfPositions[i][j] = 'M';
-                } else {
-                    matrixOfPositions[i][j] = '~';
-                }
-            }
-        }
-        return matrixOfPositions;
-    }
-
     public static void PositionProvider(char[][] matrixOfPositions) {
 
         String line = "  1 2 3 4 5 6 7 8 9 10";
@@ -364,74 +343,6 @@ public class Main {
     }
         return isTester;
     }
-    public static boolean lastTester (char[][] matrixOfPositions, char[][] matrixOfPositions2, int counter2, String regexChar, int num, ArrayList<Ship> listOfCoordinates, Scanner scanner) {
-        boolean isFinished = false;
-        String readString2 = scanner.nextLine();
-        if (scanner.hasNextLine()) {
-            readString2 = scanner.nextLine();
-            String start2 = scanner.next();
-            System.out.println();
-            if (start2.matches(regexChar)) {
-                int indexIOfStart2= (int) start2.charAt(0) - 65;
-                int indexJOfStart2 = Integer.parseInt(start2.substring(1)) - 1;
-                Shoter(matrixOfPositions2, start2);
-                System.out.println();
-                if (matrixOfPositions2[indexIOfStart2][indexJOfStart2] == 'X') {
-                    if (Checker(matrixOfPositions2, listOfCoordinates, counter2)) {
-                        counter2 ++;
-                        if (counter2 == 5) {
-                            isFinished = true;
-                        }
-                    }
-                }
-
-            }
-        }
-        return  isFinished;
-    }
-    public static void lastPrinter (char[][] matrixOfPositions, char[][] matrixOfPositions2, int counter2, String regexChar, int num, ArrayList<Ship> listOfCoordinates2, Scanner scanner) {
-        boolean isFinished = false;
-        System.out.println();
-        System.out.println("Press Enter and pass the move to another player");
-        String readString2 = scanner.nextLine();
-        if (scanner.hasNextLine()) {
-            readString2 = scanner.nextLine();
-            PositionProvider(Provider());
-            System.out.println("---------------------");
-            PositionProvider(matrixOfPositions);
-            System.out.println();
-            System.out.printf("Player %d, it's your turn:%n", num);
-            String start2 = scanner.next();
-            System.out.println();
-            if (start2.matches(regexChar)) {
-                int indexIOfStart2= (int) start2.charAt(0) - 65;
-                int indexJOfStart2 = Integer.parseInt(start2.substring(1)) - 1;
-                Shoter(matrixOfPositions2, start2);
-                System.out.println();
-                if (matrixOfPositions2[indexIOfStart2][indexJOfStart2] == 'X') {
-                    if (Checker(matrixOfPositions2, listOfCoordinates2, counter2)) {
-                        counter2 ++;
-                        if (counter2 == 5) {
-                            System.out.println("You sank the last ship. You won. Congratulations!");
-                            return;
-                        } else {
-                            System.out.println("You sank a ship!");
-
-                        }
-                    } else {
-                        System.out.println("You hit a ship!");
-                    }
-                } else {
-                    System.out.println("You missed!");
-                }
-
-            } else {
-                System.out.println("Error! You entered the wrong coordinates!");
-                System.out.println();
-            }
-        }
-    }
-
     public static void main(String[] args) {
         String regexChar = "[A-J][1-9]|[A-J]10";
         System.out.println("Player 1, place your ships on the game field");
@@ -453,67 +364,140 @@ public class Main {
                 String start = scanner.next();
                 String end = scanner.next();
                 System.out.println();
-                        try {
-                            int indexIOfStart = (int) start.charAt(0) - 65;
-                            int indexJOfStart = Integer.parseInt(start.substring(1)) - 1;
-                            int indexIOfEnd = (int) end.charAt(0) - 65;
-                            int indexJOfEnd = Integer.parseInt(end.substring(1)) - 1;
-                            if (indexIOfStart > indexIOfEnd) {
-                                int save = indexIOfStart;
-                                indexIOfStart = indexIOfEnd;
-                                indexIOfEnd = save;
-                            }
-                            if (indexJOfStart > indexJOfEnd) {
-                                int save = indexJOfStart;
-                                indexJOfStart = indexJOfEnd;
-                                indexJOfEnd = save;
-                            }
-                            if (counter != 5) {
+                try {
+                    int indexIOfStart = (int) start.charAt(0) - 65;
+                    int indexJOfStart = Integer.parseInt(start.substring(1)) - 1;
+                    int indexIOfEnd = (int) end.charAt(0) - 65;
+                    int indexJOfEnd = Integer.parseInt(end.substring(1)) - 1;
+                    if (indexIOfStart > indexIOfEnd) {
+                        int save = indexIOfStart;
+                        indexIOfStart = indexIOfEnd;
+                        indexIOfEnd = save;
+                    }
+                    if (indexJOfStart > indexJOfEnd) {
+                        int save = indexJOfStart;
+                        indexJOfStart = indexJOfEnd;
+                        indexJOfEnd = save;
+                    }
+                    if (counter != 5) {
 
-                                if (tester(start, end, matrixOfPositions, counter)) {
+                        if (tester(start, end, matrixOfPositions, counter)) {
 
-                                    PositionProvider(PositionReturner(start, end, matrixOfPositions));
-                                    listOfCoordinates.add(new Ship(indexIOfStart, indexJOfStart, indexIOfEnd, indexJOfEnd, decider(counter)));
-                                    counter++;
-                                    try {
-                                        if (counter != 5) {
-                                            printer(counter);
-                                        } else {
-                                            System.out.println();
-                                            System.out.println("Press Enter and pass the move to another player");
-                                            String readString = scanner.nextLine();
-                                            if (scanner.hasNextLine()) {
-                                                readString = scanner.nextLine();
-                                                System.out.println();
-                                                System.out.println("Player 2, place your ships to the game field");
-                                                PositionProvider(Provider());
-                                                printer(0);
-                                            }
-                                        }
-                                    } catch (Exception e) {
-                                        System.out.println("Error! Enter numbers");
+                            PositionProvider(PositionReturner(start, end, matrixOfPositions));
+                            listOfCoordinates.add(new Ship(indexIOfStart, indexJOfStart, indexIOfEnd, indexJOfEnd, decider(counter)));
+                            counter++;
+                            try {
+                                if (counter != 5) {
+                                    printer(counter);
+                                } else {
+                                    System.out.println();
+                                    System.out.println("Press Enter and pass the move to another player");
+                                    String readString = scanner.nextLine();
+                                    if (scanner.hasNextLine()) {
+                                        readString = scanner.nextLine();
+                                        System.out.println();
+                                        System.out.println("Player 2, place your ships to the game field");
+                                        PositionProvider(Provider());
+                                        printer(0);
                                     }
                                 }
-                            }else {
-                                        if (tester(start, end, matrixOfPositions2, counterPlayer)) {
-                                            PositionProvider(PositionReturner(start, end, matrixOfPositions2));
-                                            listOfCoordinates2.add(new Ship(indexIOfStart, indexJOfStart, indexIOfEnd, indexJOfEnd, decider(counterPlayer)));
-                                            counterPlayer++;
-                                            if (counterPlayer != 5) {
-                                                printer(counter);
-                                            } else {
-                                                while (scanner.hasNextLine()) {
-                                                   /* if (!lastTester(matrixOfPositions, matrixOfPositions2, counter2, regexChar, 1, listOfCoordinates, scanner) &&
-                                                            !lastTester(matrixOfPositions2, matrixOfPositions, counterPlayer2, regexChar, 2, listOfCoordinates2, scanner)){*/
-                                                        lastPrinter(matrixOfPositions, matrixOfPositions2, counter2, regexChar, 1, listOfCoordinates, scanner);
-                                                        lastPrinter(matrixOfPositions2, matrixOfPositions, counterPlayer2, regexChar, 2, listOfCoordinates2, scanner);
-                                                    /* else {
+                            } catch (Exception e) {
+                                System.out.println("Error! Enter numbers");
+                            }
+                        }
+                    } else {
+                        if (tester(start, end, matrixOfPositions2, counterPlayer)) {
+                            PositionProvider(PositionReturner(start, end, matrixOfPositions2));
+                            listOfCoordinates2.add(new Ship(indexIOfStart, indexJOfStart, indexIOfEnd, indexJOfEnd, decider(counterPlayer)));
+                            counterPlayer++;
+                            if (counterPlayer != 5) {
+                                printer(counterPlayer);
+                            } else {
+                                while (true) {
+                                    System.out.println();
+
+                                    System.out.println("Press Enter and pass the move to another player");
+                                    String readString2 = scanner.nextLine();
+                                    if (scanner.hasNextLine()) {
+                                        readString2 = scanner.nextLine();
+                                        PositionProvider(Provider());
+                                        System.out.println("---------------------");
+                                        //******first player****************************
+
+                                        PositionProvider(matrixOfPositions);
+                                        System.out.printf("%nPlayer 1, it's your turn:%n");
+                                        String start2 = scanner.next();
+                                        System.out.println();
+                                        if (start2.matches(regexChar)) {
+                                            int indexIOfStart2 = (int) start2.charAt(0) - 65;
+                                            int indexJOfStart2 = Integer.parseInt(start2.substring(1)) - 1;
+                                            Shoter(matrixOfPositions2, start2);
+                                            if (matrixOfPositions2[indexIOfStart2][indexJOfStart2] == 'X') {
+                                                if (Checker(matrixOfPositions2, listOfCoordinates2, counter2)) {
+                                                    counter2++;
+                                                    if (counter2 == 5) {
+                                                        System.out.println("You sank the last ship. You won. Congratulations!");
                                                         return;
-                                                    }*/
+                                                    } else {
+                                                        System.out.println("You sank a ship!");
+
+                                                    }
+                                                } else {
+                                                    System.out.println("You hit a ship!");
                                                 }
-                                                }
+                                            } else {
+                                                System.out.println("You missed!");
                                             }
+
+                                        } else {
+                                            System.out.println("Error! You entered the wrong coordinates!");
+                                            System.out.println();
                                         }
+                                    }
+                                    //*****second player********
+                                    System.out.println();
+
+                                    System.out.println("Press Enter and pass the move to another player");
+                                    String readString3 = scanner.nextLine();
+                                    if (scanner.hasNextLine()) {
+                                        readString3 = scanner.nextLine();
+                                        PositionProvider(Provider());
+                                        System.out.println("---------------------");
+
+                                        PositionProvider(matrixOfPositions2);
+                                        System.out.printf("%nPlayer 2, it's your turn:%n");
+                                        String start2 = scanner.next();
+                                        System.out.println();
+                                        if (start2.matches(regexChar)) {
+                                            int indexIOfStart2 = (int) start2.charAt(0) - 65;
+                                            int indexJOfStart2 = Integer.parseInt(start2.substring(1)) - 1;
+                                            Shoter(matrixOfPositions, start2);
+                                            if (matrixOfPositions[indexIOfStart2][indexJOfStart2] == 'X') {
+                                                if (Checker(matrixOfPositions, listOfCoordinates, counterPlayer2)) {
+                                                    counterPlayer2++;
+                                                    if (counterPlayer2 == 5) {
+                                                        System.out.println("You sank the last ship. You won. Congratulations!");
+                                                        return;
+                                                    } else {
+                                                        System.out.println("You sank a ship!");
+
+                                                    }
+                                                } else {
+                                                    System.out.println("You hit a ship!");
+                                                }
+                                            } else {
+                                                System.out.println("You missed!");
+                                            }
+
+                                        } else {
+                                            System.out.println("Error! You entered the wrong coordinates!");
+                                            System.out.println();
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    }
 
                                 } catch (Exception e) {
                                     System.out.println("Error");
